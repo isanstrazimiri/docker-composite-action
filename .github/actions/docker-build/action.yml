@@ -19,7 +19,10 @@ inputs:
 #  GITHUB_SHA: ${{ github.sha }}
 #  GITHUB_BRANCH: ${{ github.ref }}
 #  GITHUB_REPOSITORY: ${{ github.repository }}
-#
+env:
+  IMAGE_TAG: ${{ inputs.image_tag }}
+  IMAGE_NAME: ${{ inputs.image_name }}
+  GCR_NAME: gcr.io/${{ inputs.gcr_name }}
 
 
 runs:
@@ -37,9 +40,6 @@ runs:
     - name: Build and Push Image
       shell: bash
       run: |
-        IMAGE_TAG=${{ inputs.image_tag }}
-        IMAGE_NAME=${{ inputs.image_name }}
-        GCR_NAME=gcr.io/${{ inputs.gcr_name }}
         docker build -t $GCR_NAME/$IMAGE_NAME:$IMAGE_TAG .
         docker push $GCR_NAME/$IMAGE_NAME:$IMAGE_TAG
 
