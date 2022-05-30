@@ -1,0 +1,36 @@
+---
+name: 'CICD'
+
+on:
+  pull_request:
+
+env:
+  GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+  GITHUB_SHA: ${{ github.sha }}
+  GITHUB_BRANCH: ${{ github.ref }}
+  GITHUB_REPOSITORY: ${{ github.repository }}
+  PUSH_TYPE: $(printf '%s' "$GITHUB_BRANCH" | cut -f2 -d/)
+  IMAGE_TAG: ${PREFIX}"-"$(printf '%s' "$GITHUB_SHA" | cut -c 1-7)
+  IMAGE_NAME: $(printf '%s' "$GITHUB_REPOSITORY" | cut -f2- -d/)
+  PROJECT_NAME: "chess-gcr1"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Building and Pushing the image
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: Composite-actions
+      - name: Test directory
+        run: |
+          ls -la
+          cd .github/actions
+          ls -la
+
+
+      - id: docker-build-push
+        uses: ./.github/actions/action
+        with:
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          gcr_name: echo $PROJECT_NAME
