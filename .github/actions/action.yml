@@ -1,0 +1,39 @@
+name: "Build and Push Docker Image"
+description: "Action used to build Docker Images and store it in GCR"
+inputs:
+  service_account_key:
+    description: "gcloud auth service_account_key"
+    required: true
+  gcr_name:
+    description: "repository name of gcr"
+    required: true
+
+
+
+env:
+  GITHUB_SHA: ${{ github.sha }}
+  GITHUB_BRANCH: ${{ github.ref }}
+  GITHUB_REPOSITORY: ${{ github.repository }}
+
+
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up gcloud
+      id: gcloud
+      uses: google-github-actions/setup-gcloud@master
+      with:
+        version: '278.0.0'
+        service_account_key: ${{ inputs.service_account_key }}
+    - name: Configure docker auth
+      run: gcloud auth configure-docker
+    - name: Build and Push Image
+      run: |
+        [ $GITHUB_BRANCH == "refs/heads/master" ] && PREFIX=staging || PREFIX=sandbox
+        IMAGE_TAG=$PREFIX-$(echo $GITHUB_SHA | cut -c 1-7)
+        IMAGE_NAME=$(echo $GITHUB_REPOSITORY | cut -c 10-)
+        GCR_NAME=gcr.io/${{ inputs.gcr_name }}
+        docker build -t $GCR_NAME/$IMAGE_NAME:$IMAGE_TAG .
+        docker push $GCR_NAME/$IMAGE_NAME:$IMAGE_TAG
+
