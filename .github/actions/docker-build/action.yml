@@ -7,7 +7,12 @@ inputs:
   gcr_name:
     description: "repository name of gcr"
     required: true
-
+  image_tag:
+    description: "Tag of the image"
+    required: true
+  image_name:
+    description: "Name of the Image to be build"
+    required: true
 
 #
 #env:
@@ -32,8 +37,8 @@ runs:
     - name: Build and Push Image
       shell: bash
       run: |
-        IMAGE_TAG=0.1
-        IMAGE_NAME=tobechanged
+        IMAGE_TAG=${{ inputs.image_tag }}
+        IMAGE_NAME=${{ inputs.image_name }}
         GCR_NAME=gcr.io/${{ inputs.gcr_name }}
         docker build -t $GCR_NAME/$IMAGE_NAME:$IMAGE_TAG .
         docker push $GCR_NAME/$IMAGE_NAME:$IMAGE_TAG
