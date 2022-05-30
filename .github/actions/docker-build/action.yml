@@ -32,8 +32,7 @@ runs:
     - name: Build and Push Image
       shell: bash
       run: |
-#        [ $GITHUB_BRANCH == "refs/heads/master" ] && PREFIX=staging || PREFIX=sandbox
-        IMAGE_TAG=testing-composite
+        IMAGE_TAG=0.1
         IMAGE_NAME=tobechanged
         GCR_NAME=gcr.io/${{ inputs.gcr_name }}
         docker build -t $GCR_NAME/$IMAGE_NAME:$IMAGE_TAG .
