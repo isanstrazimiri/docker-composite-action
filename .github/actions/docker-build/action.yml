@@ -21,7 +21,6 @@ runs:
   using: "composite"
   steps:
     - name: Set up gcloud
-      shell: bash
       id: gcloud
       uses: google-github-actions/setup-gcloud@master
       with:
