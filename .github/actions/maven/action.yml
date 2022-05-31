@@ -11,7 +11,7 @@ runs:
   steps:
     - name: Set up gcloud
       id: gcloud
-      uses: google-github-actions/setup-gcloud@master
+      uses: google-github-actions/setup-gcloud@main
       with:
         version: '278.0.0'
         service_account_key: ${{ inputs.service_account_key }}
