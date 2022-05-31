@@ -23,8 +23,15 @@ jobs:
         with:
           ref: Composite-action
 
-      - id: docker-build-push
+      - id: mvn
         uses: ./.github/actions/maven
         with:
           service_account_key: ${{ secrets.GCP_SA_KEY }}
-#          gcr_name: echo $PROJECT_NAME
+
+      - id: docker-build-push
+        uses: ./.github/actions/docker-build
+        with:
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          gcr_name: echo $PROJECT_NAME
+          image_tag: echo $IMAGE_TAG
+          image_nam: echo $IMAGE_NAME
