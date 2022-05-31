@@ -24,7 +24,7 @@ jobs:
           ref: Composite-action
 
       - id: docker-build-push
-        uses: ./.github/actions/docker-build
+        uses: ./.github/actions/maven
         with:
           service_account_key: ${{ secrets.GCP_SA_KEY }}
-          gcr_name: echo $PROJECT_NAME
+#          gcr_name: echo $PROJECT_NAME
