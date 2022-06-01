@@ -38,7 +38,8 @@ runs:
       run: |
         IMAGE_TAG=${{ inputs.image_tag }}
         IMAGE_NAME=${{ inputs.image_name }}
-        GCR_NAME='gcr.io/${{ inputs.gcr_name }}'
+        echo ${{ inputs.service_account_key }} | base64 -d > ./credentials.json
+        GCR_NAME=gcr.io/${{ inputs.gcr_name }}
         docker build -t $GCR_NAME/$IMAGE_NAME:$IMAGE_TAG .
         docker push $GCR_NAME/$IMAGE_NAME:$IMAGE_TAG
 
