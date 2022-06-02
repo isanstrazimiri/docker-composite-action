@@ -33,5 +33,5 @@ jobs:
         with:
           service_account_key: ${{ secrets.GCP_SA_KEY }}
           gcr_name: echo $PROJECT_NAME
-          image_tag: echo $IMAGE_TAG
+          image_tag: test
           image_name: echo $IMAGE_NAME
