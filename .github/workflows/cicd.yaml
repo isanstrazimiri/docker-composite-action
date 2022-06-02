@@ -7,7 +7,7 @@ on:
 
 env:
   GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
-  GITHUB_SHA: ${{ github.sha::7 }}
+  GITHUB_SHA: ${{ github.sha }}
   GITHUB_BRANCH: ${{ github.ref }}
   GITHUB_REPOSITORY: ${{ github.repository }}
   PUSH_TYPE: $(printf '%s' "$GITHUB_BRANCH" | cut -f2 -d/)
@@ -38,7 +38,8 @@ jobs:
         run: |
           echo ${GITHUB_REF#refs/heads/}
           echo $GITHUB_SHA
-          echo ${GITHUB_SHA::7}
+          echo ${GITHUB_SHA::7} >> $SHORT_SHA
+          echo $SHORT_SHA
           echo $TAGU
           echo ${{ steps.run_params.outputs.img-tag }}
           echo ${{ steps.run_params.outputs.img-name }}
