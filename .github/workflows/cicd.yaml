@@ -7,7 +7,7 @@ on:
 
 env:
   GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
-  GITHUB_SHA: ${{ github.sha }}
+  GITHUB_SHA: ${{ github.sha::7 }}
   GITHUB_BRANCH: ${{ github.ref }}
   GITHUB_REPOSITORY: ${{ github.repository }}
   PUSH_TYPE: $(printf '%s' "$GITHUB_BRANCH" | cut -f2 -d/)
