@@ -31,18 +31,22 @@ jobs:
       - name: Calculate Key Run Parameters
         id: run_params
         run: |
-          echo "::set-output name=gh-branch::$([ $GITHUB_BRANCH == "refs/heads/master" ] && PREFIX=staging || PREFIX=sandbox)\n"
-          echo "::set-output name=img-tag::$($PREFIX-$(echo $GITHUB_SHA | cut -c 1-7))\n"
-          echo "::set-output name=img-name::$(echo $GITHUB_REPOSITORY | cut -c 10-)\n"
+          echo "::set-output name=gh-branch::$([ $GITHUB_BRANCH == "refs/heads/master" ] && PREFIX=staging || PREFIX=sandbox)"
+          echo "::set-output name=img-tag::$($PREFIX-$(echo $GITHUB_SHA | cut -c 1-7))"
+          echo "::set-output name=img-name::$(echo $GITHUB_REPOSITORY | cut -c 10-)"
+      - name: Display Key Run Params
+        run: |
+          echo ${{ steps.run_params.outputs.img-tag }}
+          echo ${{ steps.run_params.outputs.img-name }}
 #      outputs:
 #        image_tag: ${{ steps.run_params.outputs.img-tag }}
 #        image_name: ${{ steps.run_params.outputs.img-name }}
-
-
-      - id: docker-build-push
-        uses: ./.github/actions/docker-build
-        with:
-          service_account_key: ${{ secrets.GCP_SA_KEY }}
-          gcr_name: chess-gcr1
-          image_tag: ${{ steps.run_params.outputs.img-tag }}
-          image_name: ${{ steps.run_params.outputs.img-name }}
+#
+#
+#      - id: docker-build-push
+#        uses: ./.github/actions/docker-build
+#        with:
+#          service_account_key: ${{ secrets.GCP_SA_KEY }}
+#          gcr_name: chess-gcr1
+#          image_tag: ${{ steps.run_params.outputs.img-tag }}
+#          image_name: ${{ steps.run_params.outputs.img-name }}
