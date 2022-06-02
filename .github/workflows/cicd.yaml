@@ -30,7 +30,8 @@ jobs:
       - name: Calculate Key Run Parameters
         id: run_params
         run: |
-          echo "::set-output name=gh-branch::$([ $GITHUB_BRANCH == "refs/heads/main" ] && PREFIX=staging || PREFIX=sandbox)"
+          [ $GITHUB_BRANCH == "refs/heads/master" ] && PREFIX=staging || PREFIX=sandbox
+#          echo "::set-output name=gh-branch::$([ $GITHUB_BRANCH == "refs/heads/main" ] && PREFIX=staging || PREFIX=sandbox)"
           echo "::set-output name=img-tag::$($PREFIX-$(echo $GITHUB_SHA | cut -c 1-7))"
           echo "::set-output name=img-name::$(echo $GITHUB_REPOSITORY | cut -c 10-)"
       - name: Display Key Run Params
