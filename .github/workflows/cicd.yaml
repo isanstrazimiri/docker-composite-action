@@ -35,6 +35,7 @@ jobs:
           echo "::set-output name=img-name::$(echo $GITHUB_REPOSITORY | cut -c 10-)"
       - name: Display Key Run Params
         run: |
+          echo $IMAGE_TAG
           echo ${{ steps.run_params.outputs.img-tag }}
           echo ${{ steps.run_params.outputs.img-name }}
 #      outputs:
