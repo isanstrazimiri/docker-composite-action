@@ -28,7 +28,10 @@ jobs:
           echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
           echo ${{ steps.run_params.outputs.img-tag }}
           echo ${{ steps.run_params.outputs.img-name }}
-
+      - name: Calculate Key Run Parameters
+        id: run_params
+        run: |
+          echo "::set-output name=img-name::$(echo $GITHUB_REPOSITORY | cut -c 10-)"
 
       - name: Print github_env
         run: |
