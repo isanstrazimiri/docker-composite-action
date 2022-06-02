@@ -37,11 +37,12 @@ jobs:
       - name: Display Key Run Params
         run: |
           echo ${GITHUB_REF#refs/heads/}
-          SHORT_SHA=${GITHUB_SHA::7}
+          echo "SHORT_SHA=${GITHUB_SHA::7}" >> GITHUB_ENV
           echo $SHORT_SHA
-          echo $TAGU
           echo ${{ steps.run_params.outputs.img-tag }}
           echo ${{ steps.run_params.outputs.img-name }}
+      - name: Print github_env
+        run: echo $SHORT_SHA
 #      outputs:
 #        image_tag: ${{ steps.run_params.outputs.img-tag }}
 #        image_name: ${{ steps.run_params.outputs.img-name }}
