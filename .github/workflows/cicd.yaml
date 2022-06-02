@@ -26,11 +26,13 @@ jobs:
         id: run_params
         run: |
           [ $GITHUB_BRANCH == "refs/heads/master" ] && PREFIX=staging || PREFIX=sandbox
+          TAGU=$PREFIX-$(echo $GITHUB_SHA | cut -c 1-7)
+          echo $TAGU
           echo "::set-output name=img-tag::$($PREFIX-$(echo $GITHUB_SHA | cut -c 1-7))"
           echo "::set-output name=img-name::$(echo $GITHUB_REPOSITORY | cut -c 10-)"
       - name: Display Key Run Params
         run: |
-          echo $IMAGE_TAG
+          echo $TAGU
           echo ${{ steps.run_params.outputs.img-tag }}
           echo ${{ steps.run_params.outputs.img-name }}
 #      outputs:
