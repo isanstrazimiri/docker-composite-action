@@ -2,7 +2,8 @@
 name: 'CICD'
 
 on:
-  pull_request:
+  push:
+
 
 env:
   GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
@@ -13,6 +14,7 @@ env:
   IMAGE_TAG: ${PREFIX}"-"$(printf '%s' "$GITHUB_SHA" | cut -c 1-7)
   IMAGE_NAME: $(printf '%s' "$GITHUB_REPOSITORY" | cut -f2- -d/)
   PROJECT_NAME: "chess-gcr1"
+  CHESSCOM_GCR: gcr.io/chess-gcr1
 
 jobs:
   build:
@@ -20,17 +22,30 @@ jobs:
     name: Building and Pushing the image
     steps:
       - uses: actions/checkout@v3
-        with:
-          ref: Composite-actions
-      - name: Test directory
+#
+#      - id: mvn
+#        uses: ./.github/actions/maven
+#        with:
+#          service_account_key: ${{ secrets.GCP_SA_KEY }}
+      - name: Calculate Key Run Parameters
+        id: run_params
         run: |
-          ls -la
-          cd .github/actions
-          ls -la
-
-
-      - id: docker-build-push
-        uses: ./.github/actions/action
-        with:
-          service_account_key: ${{ secrets.GCP_SA_KEY }}
-          gcr_name: echo $PROJECT_NAME
+          echo "::set-output name=gh-branch::$([ $GITHUB_BRANCH == "refs/heads/master" ] && PREFIX=staging || PREFIX=sandbox)"
+          echo "::set-output name=img-tag::$($PREFIX-$(echo $GITHUB_SHA | cut -c 1-7))"
+          echo "::set-output name=img-name::$(echo $GITHUB_REPOSITORY | cut -c 10-)"
+      - name: Display Key Run Params
+        run: |
+          echo ${{ steps.run_params.outputs.img-tag }}
+          echo ${{ steps.run_params.outputs.img-name }}
+#      outputs:
+#        image_tag: ${{ steps.run_params.outputs.img-tag }}
+#        image_name: ${{ steps.run_params.outputs.img-name }}
+#
+#
+#      - id: docker-build-push
+#        uses: ./.github/actions/docker-build
+#        with:
+#          service_account_key: ${{ secrets.GCP_SA_KEY }}
+#          gcr_name: chess-gcr1
+#          image_tag: ${{ steps.run_params.outputs.img-tag }}
+#          image_name: ${{ steps.run_params.outputs.img-name }}

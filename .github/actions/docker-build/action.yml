@@ -7,14 +7,18 @@ inputs:
   gcr_name:
     description: "repository name of gcr"
     required: true
+  image_tag:
+    description: "Tag of the image"
+    required: true
+  image_name:
+    description: "Name of the Image to be build"
+    required: true
 
-
-
-env:
-  GITHUB_SHA: ${{ github.sha }}
-  GITHUB_BRANCH: ${{ github.ref }}
-  GITHUB_REPOSITORY: ${{ github.repository }}
-
+#
+#env:
+#  GITHUB_SHA: ${{ github.sha }}
+#  GITHUB_BRANCH: ${{ github.ref }}
+#  GITHUB_REPOSITORY: ${{ github.repository }}
 
 
 runs:
@@ -22,17 +26,19 @@ runs:
   steps:
     - name: Set up gcloud
       id: gcloud
-      uses: google-github-actions/setup-gcloud@master
+      uses: google-github-actions/setup-gcloud@main
       with:
         version: '278.0.0'
         service_account_key: ${{ inputs.service_account_key }}
     - name: Configure docker auth
+      shell: bash
       run: gcloud auth configure-docker
     - name: Build and Push Image
+      shell: bash
       run: |
-        [ $GITHUB_BRANCH == "refs/heads/master" ] && PREFIX=staging || PREFIX=sandbox
-        IMAGE_TAG=$PREFIX-$(echo $GITHUB_SHA | cut -c 1-7)
-        IMAGE_NAME=$(echo $GITHUB_REPOSITORY | cut -c 10-)
+        IMAGE_TAG=${{ inputs.image_tag }}
+        IMAGE_NAME=${{ inputs.image_name }}
+        echo ${{ inputs.service_account_key }} | base64 -d > ./credentials.json
         GCR_NAME=gcr.io/${{ inputs.gcr_name }}
         docker build -t $GCR_NAME/$IMAGE_NAME:$IMAGE_TAG .
         docker push $GCR_NAME/$IMAGE_NAME:$IMAGE_TAG

@@ -1,0 +1,34 @@
+name: "Maven"
+description: "Action used to build projects using Maven"
+inputs:
+  service_account_key:
+    description: "gcloud auth service_account_key"
+    required: true
+
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up gcloud
+      id: gcloud
+      uses: google-github-actions/setup-gcloud@main
+      with:
+        version: '278.0.0'
+        service_account_key: ${{ inputs.service_account_key }}
+    - name: Configure docker auth
+      shell: bash
+      run: gcloud auth configure-docker
+    - name: Set up JDK
+      uses: actions/setup-java@v2
+      with:
+        distribution: temurin
+        java-version: 17
+    - name: Set up Cache
+      uses: actions/cache@v3
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-maven-
+    - name: Maven Verify
+      shell: bash
+      run: mvn verify
