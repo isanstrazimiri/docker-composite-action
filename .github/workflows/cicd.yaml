@@ -36,18 +36,18 @@ jobs:
         id: extract_branch
       - name: Display Key Run Params
         run: |
-          echo ${GITHUB_REF#refs/heads/}
-          echo ${GITHUB_SHA::7}
+          echo "BRANCH=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
+#          echo ${GITHUB_SHA::7}
           echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
           echo ${{ steps.run_params.outputs.img-tag }}
           echo ${{ steps.run_params.outputs.img-name }}
+          echo "IMG_TAG=$BRANCH-$SHORT_SHA" >> $GITHUB_ENV
+
       - name: Print github_env
-        run: echo $SHORT_SHA
+        run: echo $IMG_TAG
 #      outputs:
 #        image_tag: ${{ steps.run_params.outputs.img-tag }}
 #        image_name: ${{ steps.run_params.outputs.img-name }}
-#
-#
 #      - id: docker-build-push
 #        uses: ./.github/actions/docker-build
 #        with:
