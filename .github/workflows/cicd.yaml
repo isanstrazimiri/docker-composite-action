@@ -33,7 +33,9 @@ jobs:
       - name: Print github_env
         run: |
           IMG_TAG=$BRANCH-$SHORT_SHA
-          echo $IMG_TAG
+          echo $IMG_TAG >> $GITHUB_ENV
+      - name: Testing
+        run: echo $IMG_TAG
 #      outputs:
 #        image_tag: ${{ steps.run_params.outputs.img-tag }}
 #        image_name: ${{ steps.run_params.outputs.img-name }}
