@@ -2,7 +2,8 @@
 name: 'CICD'
 
 on:
-  pull_request:
+  push:
+
 
 env:
   GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
@@ -21,8 +22,6 @@ jobs:
     name: Building and Pushing the image
     steps:
       - uses: actions/checkout@v3
-        with:
-          ref: Composite-action
 #
 #      - id: mvn
 #        uses: ./.github/actions/maven
