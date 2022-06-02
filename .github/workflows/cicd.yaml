@@ -36,6 +36,7 @@ jobs:
         id: extract_branch
       - name: Display Key Run Params
         run: |
+          echo ${GITHUB_REF#refs/heads/}"
           echo $TAGU
           echo ${{ steps.run_params.outputs.img-tag }}
           echo ${{ steps.run_params.outputs.img-name }}
