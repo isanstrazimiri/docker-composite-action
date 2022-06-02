@@ -22,11 +22,11 @@ jobs:
       - uses: actions/checkout@v3
         with:
           ref: Composite-action
-
-      - id: mvn
-        uses: ./.github/actions/maven
-        with:
-          service_account_key: ${{ secrets.GCP_SA_KEY }}
+#
+#      - id: mvn
+#        uses: ./.github/actions/maven
+#        with:
+#          service_account_key: ${{ secrets.GCP_SA_KEY }}
 
       - id: docker-build-push
         uses: ./.github/actions/docker-build
