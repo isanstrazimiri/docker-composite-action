@@ -36,7 +36,6 @@ jobs:
           echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
           echo ${{ steps.run_params.outputs.img-tag }}
           echo ${{ steps.run_params.outputs.img-name }}
-#          echo "IMG_TAG=${$BRANCH-$SHORT_SHA}" >> $GITHUB_ENV
           IMG_TAG=$BRANCH-$SHORT_SHA >> $GITHUB_ENV
 
       - name: Print github_env
