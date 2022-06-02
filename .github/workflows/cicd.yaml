@@ -13,6 +13,7 @@ env:
   IMAGE_TAG: ${PREFIX}"-"$(printf '%s' "$GITHUB_SHA" | cut -c 1-7)
   IMAGE_NAME: $(printf '%s' "$GITHUB_REPOSITORY" | cut -f2- -d/)
   PROJECT_NAME: "chess-gcr1"
+  CHESSCOM_GCR: gcr.io/chess-gcr1
 
 jobs:
   build:
@@ -27,11 +28,21 @@ jobs:
 #        uses: ./.github/actions/maven
 #        with:
 #          service_account_key: ${{ secrets.GCP_SA_KEY }}
+      - name: Calculate Key Run Parameters
+        id: run_params
+        run: |
+          echo "::set-output name=gh-branch::$([ $GITHUB_BRANCH == "refs/heads/master" ] && PREFIX=staging || PREFIX=sandbox)\n"
+          echo "::set-output name=img-tag::$($PREFIX-$(echo $GITHUB_SHA | cut -c 1-7))\n"
+          echo "::set-output name=img-name::$(echo $GITHUB_REPOSITORY | cut -c 10-)\n"
+#      outputs:
+#        image_tag: ${{ steps.run_params.outputs.img-tag }}
+#        image_name: ${{ steps.run_params.outputs.img-name }}
+
 
       - id: docker-build-push
         uses: ./.github/actions/docker-build
         with:
           service_account_key: ${{ secrets.GCP_SA_KEY }}
           gcr_name: echo $PROJECT_NAME
-          image_tag: test
-          image_name: echo delete-me
+          image_tag: ${{ steps.run_params.outputs.img-tag }}
+          image_name: ${{ steps.run_params.outputs.img-name }}
