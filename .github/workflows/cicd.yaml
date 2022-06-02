@@ -37,10 +37,11 @@ jobs:
           echo ${{ steps.run_params.outputs.img-tag }}
           echo ${{ steps.run_params.outputs.img-name }}
 #          echo "IMG_TAG=${$BRANCH-$SHORT_SHA}" >> $GITHUB_ENV
+          IMG_TAG=$BRANCH-$SHORT_SHA >> $GITHUB_ENV
 
       - name: Print github_env
         run: |
-          IMG_TAG=$BRANCH-$SHORT_SHA
+#          IMG_TAG=$BRANCH-$SHORT_SHA
           echo $IMG_TAG
 #      outputs:
 #        image_tag: ${{ steps.run_params.outputs.img-tag }}
