@@ -30,6 +30,10 @@ jobs:
           echo $TAGU
           echo "::set-output name=img-tag::$($PREFIX-$(echo $GITHUB_SHA | cut -c 1-7))"
           echo "::set-output name=img-name::$(echo $GITHUB_REPOSITORY | cut -c 10-)"
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
       - name: Display Key Run Params
         run: |
           echo $TAGU
