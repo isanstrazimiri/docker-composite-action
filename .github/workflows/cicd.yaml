@@ -43,6 +43,6 @@ jobs:
         uses: ./.github/actions/docker-build
         with:
           service_account_key: ${{ secrets.GCP_SA_KEY }}
-          gcr_name: echo $PROJECT_NAME
+          gcr_name: chess-gcr1
           image_tag: ${{ steps.run_params.outputs.img-tag }}
           image_name: ${{ steps.run_params.outputs.img-name }}
