@@ -32,7 +32,6 @@ jobs:
         run: pwd
   push:
     runs-on: ubuntu-latest
-    if: ${{ env.GITHUB_BRANCH }} == 'ref/heads/staging'
+    if: $GITHUB_REF == 'ref/heads/staging'
     steps:
       - uses: actions/checkout@v3
-        
