@@ -25,10 +25,8 @@ jobs:
 
       - id: docker-build-push
         if: ${{ env.GITHUB_BRANCH }} == 'ref/heads/staging'
-        uses: ./.github/actions/action
-        with:
-          service_account_key: ${{ secrets.GCP_SA_KEY }}
-          gcr_name: echo $PROJECT_NAME
+        run: ls -la
+
       - name: Does this run
         if: ${{ env.GITHUB_BRANCH }} == 'ref/heads/master'
         run: pwd
