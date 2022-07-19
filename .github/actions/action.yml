@@ -28,12 +28,23 @@ runs:
         service_account_key: ${{ inputs.service_account_key }}
     - name: Configure docker auth
       run: gcloud auth configure-docker
-    - name: Build and Push Image
+#    - name: Build and Push Image
+#      if: ${{ (github.ref == 'ref/heads/master') || (github.ref == 'ref/heads/staging') }}
+#      run: |
+#        [ $GITHUB_BRANCH == "refs/heads/master" ] && PREFIX=staging || PREFIX=sandbox
+#        IMAGE_TAG=$PREFIX-$(echo $GITHUB_SHA | cut -c 1-7)
+#        IMAGE_NAME=$(echo $GITHUB_REPOSITORY | cut -c 10-)
+#        GCR_NAME=gcr.io/${{ inputs.gcr_name }}
+#        docker build -t $GCR_NAME/$IMAGE_NAME:$IMAGE_TAG .
+#        docker push $GCR_NAME/$IMAGE_NAME:$IMAGE_TAG
+    - name: Production Image
+      if: ${{ (github.ref == 'ref/heads/master') || (github.ref == 'ref/heads/staging') }}
+      shell: bash
       run: |
-        [ $GITHUB_BRANCH == "refs/heads/master" ] && PREFIX=staging || PREFIX=sandbox
-        IMAGE_TAG=$PREFIX-$(echo $GITHUB_SHA | cut -c 1-7)
-        IMAGE_NAME=$(echo $GITHUB_REPOSITORY | cut -c 10-)
+        IMAGE_TAG=${{ inputs.image_tag }} #$(echo $GITHUB_SHA | cut -c 1-7)
+        IMAGE_NAME=${{ github.ref }}
         GCR_NAME=gcr.io/${{ inputs.gcr_name }}
-        docker build -t $GCR_NAME/$IMAGE_NAME:$IMAGE_TAG .
+        docker pull $GCR_NAME/sandbox:$SANDBOX_IMAGE_TAG #fixtag
+        docker tag $GCR_NAME/sandbox:$SANDBOX_IMAGE_TAG $GCR_NAME/$IMAGE_NAME:$IMAGE_TAG
         docker push $GCR_NAME/$IMAGE_NAME:$IMAGE_TAG
 
