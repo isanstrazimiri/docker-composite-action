@@ -24,11 +24,11 @@ jobs:
           ref: Composite-action
 
       - id: docker-build-push
-        if: ${{ github_ref }} == 'ref/heads/staging'
+        if: ${{ env.GITHUB_BRANCH }} == 'ref/heads/staging'
         uses: ./.github/actions/action
         with:
           service_account_key: ${{ secrets.GCP_SA_KEY }}
           gcr_name: echo $PROJECT_NAME
       - name: Does this run
-        if: ${{ github_ref }} == 'ref/heads/master'
+        if: ${{ env.GITHUB_BRANCH }} == 'ref/heads/master'
         run: pwd
