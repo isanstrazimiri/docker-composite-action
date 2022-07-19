@@ -21,7 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: Composite-actions
+          ref: Composite-action
 
       - id: docker-build-push
         uses: ./.github/actions/action
