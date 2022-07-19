@@ -30,3 +30,9 @@ jobs:
       - name: Does this run
         if: ${{ env.GITHUB_BRANCH }} == 'ref/heads/master'
         run: pwd
+  push:
+    runs-on: ubuntu-latest
+    if: ${{ env.GITHUB_BRANCH }} == 'ref/heads/staging'
+    steps:
+      - uses: actions/checkout@v3
+        
