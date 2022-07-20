@@ -24,14 +24,14 @@ jobs:
           ref: Composite-action
 
       - id: docker-build-push
-        if: ${{ github.ref }} == 'ref/heads/staging'
+        if: ${{ github.ref }} == 'refs/heads/staging'
         run: echo ${{ github.ref }}
 
       - name: Does this run
-        if: ${{ env.GITHUB_BRANCH }} == 'ref/heads/master'
+        if: ${{ env.GITHUB_BRANCH }} == 'refs/heads/master'
         run: pwd
   push:
     runs-on: ubuntu-latest
-    if: ${{ github.ref }} == 'ref/heads/staging'
+    if: ${{ github.ref }} == 'refs/heads/staging'
     steps:
       - uses: actions/checkout@v3
