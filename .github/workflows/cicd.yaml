@@ -24,7 +24,7 @@ jobs:
           ref: Composite-action
 
       - id: docker-build-push
-        if: github.repository == 'isanstrazimir/docker-composite-action'
+        if: github.ref == 'refs/heads/master'
         run: echo ${{ github.ref }}
 
       - name: Does this run
