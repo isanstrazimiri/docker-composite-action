@@ -32,6 +32,6 @@ jobs:
         run: pwd
   push:
     runs-on: ubuntu-latest
-    if: ${{ github.ref }} == 'refs/heads/staging'
+    if: github.repository == 'isanstrazimir/docker-composite-action'
     steps:
       - uses: actions/checkout@v3
