@@ -25,7 +25,7 @@ jobs:
 
       - id: docker-build-push
         if: ${{ github.ref }} == 'ref/heads/staging'
-        run: ls -la
+        run: echo ${{ github.ref }}
 
       - name: Does this run
         if: ${{ env.GITHUB_BRANCH }} == 'ref/heads/master'
