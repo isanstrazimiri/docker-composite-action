@@ -24,7 +24,7 @@ jobs:
           ref: Composite-action
 
       - id: docker-build-push
-        if: ${{ env.GITHUB_BRANCH }} == 'ref/heads/staging'
+        if: ${{ github.ref }} == 'ref/heads/staging'
         run: ls -la
 
       - name: Does this run
@@ -32,6 +32,6 @@ jobs:
         run: pwd
   push:
     runs-on: ubuntu-latest
-    if: $GITHUB_REF == 'ref/heads/staging'
+    if: ${{ github.ref }} == 'ref/heads/staging'
     steps:
       - uses: actions/checkout@v3
